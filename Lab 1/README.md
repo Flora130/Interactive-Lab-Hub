@@ -212,8 +212,12 @@ wasn't clear.
 
 **Who were the other groups you kibitzed with? Add links to their project pages here.**
 **Summarize the feedback you got from your partners here.**
+Group 1: Yangchen Jin, Omar Shair
+https://github.com/MortalJin/Interactive-Lab-Hub/tree/Fall2026/Lab%201 
 My partners said that our storyboard was very clear of the purpose. They said the second video was better with lower light so the function is more clear. They said we could use a stronger light in the demonstration. 
-
+Group 2: Ziqiao Gao, Yan Shen
+https://github.com/zg375/Interactive-Lab-Hub/tree/4a6babdbe33db81f0d222dfc877ac0c2b9f3c293/Lab%201
+Group 3: Yan Shen, 
 ## Remix, Update, or Critique the Master
 
 Now that you understand your masterwork from the inside, respond to it. Do the
