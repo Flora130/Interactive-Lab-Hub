@@ -5,10 +5,9 @@ Does it feel like time is moving strangely during this semester?
 
 For our first Pi project, we will pay homage to the [timekeeping devices of old](https://en.wikipedia.org/wiki/History_of_timekeeping_devices) by making simple clocks.
 
-It is worth spending a little time thinking about how you mark time, and what would be useful in a clock of your own design.
 
 **Please indicate anyone you collaborated with on this Lab here.**
-Be generous in acknowledging their contributions! And also recognizing any other influences (e.g. from YouTube, Github, Twitter) that informed your design. 
+ 
 
 ## Prep
 
@@ -56,7 +55,7 @@ Labs are due on Sunday midnight. Make sure this page is linked to on your main c
 
 ## Part A. 
 ### Connect to your Pi
-Just like you did in the lab prep, ssh on to your pi. Once you get there, create a Python environment (named venv) by typing the following commands.
+
 
 ```
 ssh pi@<your Pi's IP address>
@@ -75,12 +74,10 @@ git config --global user.email "yourNetID@cornell.edu"
 
 The support for password authentication of GitHub was removed on August 13, 2021. That is, in order to link and sync your own lab-hub repo with your Pi, you will have to set up a "Personal Access Tokens" to act as the password for your GitHub account on your Pi when using git command, such as `git clone` and `git push`.
 
-Following the steps listed [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) from GitHub to set up a token. Depends on your preference, you can set up and select the scopes, or permissions, you would like to grant the token. This token will act as your GitHub password later when you use the terminal on your Pi to sync files with your lab-hub repo.
-
 
 ## Part B. 
 ### Try out the Command Line Clock
-Clone your own lab-hub repo for this assignment to your Pi and change the directory to Lab 2 folder (remember to replace the following command line with your own GitHub ID):
+Clone your own lab-hub repo for this assignment to your Pi and change the directory to Lab 2 folder:
 
 ```
 (venv) pi@raspberrypi:~$ git clone https://github.com/<YOURGITID>/Interactive-Lab-Hub.git
@@ -105,16 +102,12 @@ Install the packages from the requirements.txt and run the example script `cli_c
 (venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 2 $ python cli_clock.py 
 02/24/2021 11:20:49
 ```
-
-The terminal should show the time, you can press `ctrl-c` to exit the script.
 If you are unfamiliar with the Python code in `cli_clock.py`, have a look at [this Python refresher](https://hackernoon.com/intermediate-python-refresher-tutorial-project-ideas-and-tips-i28s320p). If you are still concerned, please reach out to the teaching staff!
 
 
 ## Part C. 
 ### Set up your RGB Display
 We have asked you to equip the [Adafruit MiniPiTFT](https://www.adafruit.com/product/4393) on your Pi in the Lab 2 prep already. Here, we will introduce you to the MiniPiTFT and Python scripts on the Pi with more details.
-
-<img src="https://cdn-learn.adafruit.com/assets/assets/000/082/842/large1024/adafruit_products_4393_iso_ORIG_2019_10.jpg" height="200" />
 
 The Raspberry Pi 5 has a variety of interfacing options. When you plug the pi in the red power LED turns on. Any time the SD card is accessed the green LED flashes. It has standard USB ports and HDMI ports. Less familiar it has a set of 20x2 pin headers that allow you to connect a various peripherals.
 
@@ -126,12 +119,7 @@ To learn more about any individual pin and what it is for go to [pinout.xyz](htt
 
 From your kit take out the display and the [Raspberry Pi 5](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.raspberrypi.com%2Fproducts%2Fraspberry-pi-5%2F&psig=AOvVaw330s4wIQWfHou2Vk3-0jUN&ust=1757611779758000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCPi1-5_czo8DFQAAAAAdAAAAABAE)
 
-Line up the screen and press it on the headers. The hole in the screen should match up with the hole on the raspberry pi.
-
-<p float="left">
-<img src="https://cdn-learn.adafruit.com/assets/assets/000/087/539/medium640/adafruit_products_4393_quarter_ORIG_2019_10.jpg?1579991932" height="200" />
-<img src="https://cdn-learn.adafruit.com/assets/assets/000/082/861/original/adafruit_products_image.png" height="200">
-</p>
+Line up the screen and press it on the headers. 
 
 ### Testing your Screen
 
@@ -158,10 +146,22 @@ You can look in `image.py` for an example of how to display an image on the scre
 
 \*\*\***Include a picture of your own Raspberry Pi displaying the piscreen.service with your unique MAC address. Additionally, please provide another picture showing the successful completion of the screen test.**\*\*\*
 
+<img height="400" alt="screenimage" src="https://github.com/user-attachments/assets/9080a9d2-a7e3-49ae-9a8d-3603eae10b17" />
+
 
 ## Part D. 
 ### Set up the Display Clock Demo
 Work on `screen_clock.py`, try to show the time by filling in the while loop (at the bottom of the script where we noted "TODO" for you). You can use the code in `cli_clock.py` and `stats.py` to figure this out.
+
+Here is the photo and video showing a clock is displaying on Pi.
+<p>
+<img width="216" height="384" alt="IMG_8140" src="https://github.com/user-attachments/assets/95199b8c-d6f0-4514-875d-96bb8a3dc681" />
+
+https://github.com/user-attachments/assets/6bd0d8b6-0a4b-4604-9904-c884b0bd1e16
+
+
+</p>
+
 
 ### How to Edit Scripts on Pi
 Option 1. One of the ways for you to edit scripts on Pi through terminal is using [`nano`](https://linuxize.com/post/how-to-use-nano-text-editor/) command. You can go into the `screen_clock.py` by typing the follow command line:
