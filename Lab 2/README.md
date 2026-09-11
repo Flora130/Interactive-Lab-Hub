@@ -1,12 +1,14 @@
 # Interactive Prototyping: The Clock of Pi
 **NAMES OF COLLABORATORS HERE** Flora Zhang zz979
+
 Does it feel like time is moving strangely during this semester?
 
 For our first Pi project, we will pay homage to the [timekeeping devices of old](https://en.wikipedia.org/wiki/History_of_timekeeping_devices) by making simple clocks.
 
 
 **Please indicate anyone you collaborated with on this Lab here.**
- 
+
+ Thanks for help of Simin Xu and Yangchen Jin, who helped me check the Internet connection.
 
 ## Prep
 
