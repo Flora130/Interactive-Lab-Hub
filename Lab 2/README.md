@@ -146,6 +146,22 @@ You can look in `image.py` for an example of how to display an image on the scre
 
 \*\*\***Include a picture of your own Raspberry Pi displaying the piscreen.service with your unique MAC address. Additionally, please provide another picture showing the successful completion of the screen test.**\*\*\*
 
+Here is the MAC address information displaying on Pi.
+
+<img height="400" alt="MAC" src="https://github.com/user-attachments/assets/5fff4b97-ec9d-4872-bbc6-2014cdf0810a" />
+
+After the Internet checking, I ran the color code and the screen turned into green.
+
+<img height="400" alt="color" src="https://github.com/user-attachments/assets/6c75ec9a-5788-4a76-9ed2-afbbe1369de9" />
+
+I wrote "red" in terminal, and here is what happened: when I pressed the up button, the screen changed into white, and the bottom button controlled red. when two buttons are presses together, the screen turned black(no color showed).
+
+
+
+https://github.com/user-attachments/assets/f3c3a0d5-a2ea-4b56-9e72-37fc8f8e797d
+
+And here is the result of image code execution.
+
 <img height="400" alt="screenimage" src="https://github.com/user-attachments/assets/9080a9d2-a7e3-49ae-9a8d-3603eae10b17" />
 
 
