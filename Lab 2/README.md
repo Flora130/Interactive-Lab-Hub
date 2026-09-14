@@ -208,9 +208,13 @@ Another might be novel units of time. How do you measure a year? [In daylights? 
 
 We strongly discourage literal digital or analog clock display: Be creative.
 
-
 ** Insert ideas, sketches, [Verplank diagrams](https://ccrma.stanford.edu/courses/250a-fall-2004/IDSketchbok.pdf)), storyboards for your ideas **
 
+In modern life, people often experience sleep-related issues such as insomnia, excessive sleepiness, or staying up late. I plan to design a clock based on sleep duration that not only tracks the user's sleep time but also raises awareness about the importance of sleep.
+
+An initial concept: use eight hours—the amount of sleep the human body requires (or the duration cited in the latest reports)—as the unit of time measurement; the clock advances by one day only when the user's accumulated sleep reaches this duration. The clock's speed depends on the length of the user's sleep: it runs very slowly during periods of severe sleep deprivation, whereas it speeds up when the user catches up on sleep during a holiday.
+
+<img height="400" alt="sleepclock" src="https://github.com/user-attachments/assets/bb571abb-b2f8-427a-bbfc-f71cbe1fdecc" />
 
 
 **Put the names of the people you gave feedback to here. (Even better, add links to their repos here!)**
