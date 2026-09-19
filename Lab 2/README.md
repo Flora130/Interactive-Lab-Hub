@@ -210,6 +210,11 @@ We strongly discourage literal digital or analog clock display: Be creative.
 
 ** Insert ideas, sketches, [Verplank diagrams](https://ccrma.stanford.edu/courses/250a-fall-2004/IDSketchbok.pdf)), storyboards for your ideas **
 
+My inspiration for modifying the clock came from the Weasley clock in *Harry Potter*, which tracks the whereabouts of family members. Although it lacks real-time tracking capabilities, its location-tracking function gave me the idea to create a "Pomodoro-style" clock—one that tracks how I spend my time and where I am throughout the day based on the length and position of the clock hands.
+
+<img height="300" alt="clock" src="https://github.com/user-attachments/assets/50748aa2-90b5-463e-9000-57fe79f551d3" />
+
+
 <img height="300" alt="IMG_8251" src="https://github.com/user-attachments/assets/f4edb3fa-056e-4222-a387-42bc5e2f01b3" />
 
 
@@ -231,7 +236,10 @@ We strongly discourage literal digital or analog clock display: Be creative.
 
 ## Modify the barebones clock to make it your own
 
-Start small, pick just one element of your overall idea, just to show you have a handle on the code and components.
+I first used JavaScript to draw the dial from the sketch: it is divided into four sections, each with an invisible pointer. The keys 1, 2, 3, and 4 adjust the location, while 'q' and 'w' control the timing; pressing them causes the corresponding pointer to lengthen.
+
+<img height="300" alt="ScreenShot_2026-09-17_130044_509" src="https://github.com/user-attachments/assets/ec818c73-6bec-4e91-8f0c-f94bd0d86106" />
+<img  height="300" alt="ScreenShot_2026-09-17_130139_792" src="https://github.com/user-attachments/assets/e3d2ad9e-f98e-445f-9583-6e7bdd66a05f" />
 
 \*\*\***Put a copy of your code in your Lab 2 Github repo.**\*\*\*
 
