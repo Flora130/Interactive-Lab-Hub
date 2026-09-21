@@ -221,6 +221,8 @@ My inspiration for modifying the clock came from the Weasley clock in *Harry Pot
 
 **Put the names of the people you gave feedback to here. (Even better, add links to their repos here!)**
 
+Simone Xu, Yan Shen, Yangchen Jin
+
 # Lab 2 Part 2
 
 ## Prep 
@@ -229,6 +231,11 @@ My inspiration for modifying the clock came from the Weasley clock in *Harry Pot
 
 2. Look at and give feedback on the Part E. for at least 3 other people in the class and get 3 people to comment on your Part E!)
 **Put the feedback for your ideas here.**
+
+I asked for Van, Simone and Jin's feedback of my idea(story board),and
+1. Fellow students showed great interest in the clock concept, noting that it might be quite challenging to build; however, the features outlined in the storyboard were well-curated and streamlined.
+2. The storyboard is a bit difficult to understand, especially regarding the representation of the pointer in the opening scenes; however, once I explain it, its function is easily understood.
+
 
 ## Update your Lab Hub
 
@@ -243,11 +250,22 @@ I first used JavaScript to draw the dial from the sketch: it is divided into fou
 
 \*\*\***Put a copy of your code in your Lab 2 Github repo.**\*\*\*
 
+Here is the [javascript code](https://github.com/Flora130/Interactive-Lab-Hub/tree/Fall2026/Lab%202/pointer_project) for the clock interface
+
 ## Make a short video of your modified barebones PiClock
+
+https://github.com/user-attachments/assets/ef50ae95-efb4-4649-a301-4e8bfb3f894c
 
 \*\*\***Take a video of your barely modified PiClock.**\*\*\*
 
-After you edit and work on the scripts for Lab 2, the files should be upload back to your own GitHub repo! You can push to your personal github repo by adding the files here, commiting and pushing.
+
+<img height="300" alt="IMG_8303" src="https://github.com/user-attachments/assets/e1ff4914-60fb-4573-ac1f-76c3d1054837" />
+
+After you edit and work on the scripts for Lab 2, the files should be upload back to your own GitHub repo! You can push to your personal github repo by add
+
+
+
+ing the files here, commiting and pushing.
 
 ```
 (venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 2 $ git add .
@@ -266,8 +284,14 @@ Do take advantage of having done the previous iteration to refine and simplify y
 
 \*\*\***Put a copy of your code in your Lab 2 Github repo.**\*\*\*
 
+https://github.com/Flora130/Interactive-Lab-Hub/tree/Fall2026/Lab%202/pointer_project
+
 \*\*\***Take a video of your PiClock.**\*\*\*
 
+Since the JavaScript interactions were originally keyboard-controlled, I needed to convert the code to button-based control before uploading it to the Raspberry Pi. I enlisted the help of AI for this step and created a folder containing an HTML file that displays the JavaScript interface on the screen, while keeping all other functionalities intact.
+
+
+https://github.com/user-attachments/assets/55594fdb-1c6c-44cb-b0cb-4b71b477103f
 
 As always, make sure you document contributions and ideas from others (and AI) explicitly in your writeup.
 
