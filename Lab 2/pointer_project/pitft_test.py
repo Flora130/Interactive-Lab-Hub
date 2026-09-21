@@ -1,4 +1,3 @@
-
 import time
 import math
 import digitalio
@@ -7,13 +6,15 @@ from PIL import Image, ImageDraw
 from adafruit_rgb_display import st7789
 
 
-# ==========================================
-# PiTFT configuration
-# ==========================================
+# ============================================================
+# PiTFT Setup
+# ============================================================
 
 cs_pin = digitalio.DigitalInOut(board.D5)
 dc_pin = digitalio.DigitalInOut(board.D25)
 reset_pin = None
+
+BAUDRATE = 64000000
 
 spi = board.SPI()
 
@@ -22,39 +23,35 @@ disp = st7789.ST7789(
     cs=cs_pin,
     dc=dc_pin,
     rst=reset_pin,
-    baudrate=64000000,
+    baudrate=BAUDRATE,
     width=135,
     height=240,
     x_offset=53,
     y_offset=40,
 )
 
-# Physical screen size after rotation
-WIDTH = 240
-HEIGHT = 135
-ROTATION = 90
+# After rotation, the visible screen is 240 x 135
+width = disp.height
+height = disp.width
+
+rotation = 90
 
 
-# ==========================================
+# ============================================================
 # Backlight
-# GPIO22
-# ==========================================
+# ============================================================
 
 backlight = digitalio.DigitalInOut(board.D22)
 backlight.switch_to_output()
 backlight.value = True
 
 
-# ==========================================
-# PiTFT Buttons
-#
+# ============================================================
+# Buttons
 # Button A = GPIO23
 # Button B = GPIO24
-#
-# Buttons are active LOW:
-# Not pressed = True
-# Pressed     = False
-# ==========================================
+# Both are active LOW
+# ============================================================
 
 buttonA = digitalio.DigitalInOut(board.D23)
 buttonB = digitalio.DigitalInOut(board.D24)
@@ -63,54 +60,33 @@ buttonA.switch_to_input(pull=digitalio.Pull.UP)
 buttonB.switch_to_input(pull=digitalio.Pull.UP)
 
 
-# ==========================================
-# Pointer state
-# ==========================================
+# ============================================================
+# Pointer State
+# ============================================================
 
-# Current active region
 # 0 = HOME
 # 1 = SCHOOL
 # 2 = GYM
 # 3 = OUTDOOR
-active_region = 0
 
+active_region = 0
 
 # Each region has its own pointer length
 pointer_lengths = [0, 0, 0, 0]
 
-
-# Whether the current pointer is growing
+# Whether the currently active pointer is growing
 pointer_growing = False
-
 
 # Maximum pointer length
 MAX_POINTER_LENGTH = 45
 
-
-# How fast the pointer grows
+# Growth speed per frame
 GROWTH_SPEED = 1.5
 
 
-# ==========================================
-# Pointer directions
-#
-# HOME     = 225 degrees
-# SCHOOL   = 315 degrees
-# GYM      = 135 degrees
-# OUTDOOR  = 45 degrees
-# ==========================================
-
-directions = [
-    225,
-    315,
-    135,
-    45
-]
-
-
-# ==========================================
-# Region colors
-# ==========================================
+# ============================================================
+# Region Settings
+# ============================================================
 
 region_colors = [
     (255, 180, 210),   # HOME - pink
@@ -118,11 +94,6 @@ region_colors = [
     (160, 220, 160),   # GYM - green
     (255, 230, 150)    # OUTDOOR - yellow
 ]
-
-
-# ==========================================
-# Region names
-# ==========================================
 
 region_names = [
     "HOME",
@@ -132,352 +103,268 @@ region_names = [
 ]
 
 
-# ==========================================
-# Previous button states
+# ============================================================
+# Pointer Directions
 #
-# Used to detect a NEW button press.
-# ==========================================
+# HOME     -> upper-left
+# SCHOOL   -> upper-right
+# GYM      -> lower-left
+# OUTDOOR  -> lower-right
+# ============================================================
+
+directions = [
+    225,   # HOME
+    315,   # SCHOOL
+    135,   # GYM
+    45     # OUTDOOR
+]
+
+
+# ============================================================
+# Button State
+# ============================================================
 
 previous_A = True
 previous_B = True
 
 
-# ==========================================
-# Screen drawing function
-# ==========================================
+# ============================================================
+# Main Loop
+# ============================================================
 
-def draw_screen():
+while True:
 
-    image = Image.new(
-        "RGB",
-        (WIDTH, HEIGHT)
-    )
+    # --------------------------------------------------------
+    # Create new frame
+    # --------------------------------------------------------
 
+    image = Image.new("RGB", (width, height), (0, 0, 0))
     draw = ImageDraw.Draw(image)
 
 
-    # --------------------------------------
-    # Four regions
-    # --------------------------------------
+    # --------------------------------------------------------
+    # Draw four regions
+    # --------------------------------------------------------
 
-    # HOME
+    center_x = width // 2
+    center_y = height // 2
+
+    # HOME - top left
     draw.rectangle(
-        (0, 0, 119, 66),
+        (0, 0, center_x, center_y),
         fill=region_colors[0]
     )
 
-    # SCHOOL
+    # SCHOOL - top right
     draw.rectangle(
-        (120, 0, 239, 66),
+        (center_x, 0, width, center_y),
         fill=region_colors[1]
     )
 
-    # GYM
+    # GYM - bottom left
     draw.rectangle(
-        (0, 67, 119, 134),
+        (0, center_y, center_x, height),
         fill=region_colors[2]
     )
 
-    # OUTDOOR
+    # OUTDOOR - bottom right
     draw.rectangle(
-        (120, 67, 239, 134),
+        (center_x, center_y, width, height),
         fill=region_colors[3]
     )
 
 
-    # --------------------------------------
-    # Region dividing lines
-    # --------------------------------------
+    # --------------------------------------------------------
+    # Highlight active region
+    # --------------------------------------------------------
 
-    draw.line(
-        (120, 0, 120, 135),
-        fill=(255, 255, 255),
-        width=1
-    )
+    border_width = 3
 
-    draw.line(
-        (0, 67, 240, 67),
-        fill=(255, 255, 255),
-        width=1
-    )
+    if active_region == 0:
+        draw.rectangle(
+            (0, 0, center_x - 1, center_y - 1),
+            outline=(255, 255, 255),
+            width=border_width
+        )
+
+    elif active_region == 1:
+        draw.rectangle(
+            (center_x, 0, width - 1, center_y - 1),
+            outline=(255, 255, 255),
+            width=border_width
+        )
+
+    elif active_region == 2:
+        draw.rectangle(
+            (0, center_y, center_x - 1, height - 1),
+            outline=(255, 255, 255),
+            width=border_width
+        )
+
+    elif active_region == 3:
+        draw.rectangle(
+            (center_x, center_y, width - 1, height - 1),
+            outline=(255, 255, 255),
+            width=border_width
+        )
 
 
-    # --------------------------------------
-    # Center position of each region
-    # --------------------------------------
-
-    centers = [
-        (60, 33),      # HOME
-        (180, 33),     # SCHOOL
-        (60, 101),     # GYM
-        (180, 101)     # OUTDOOR
-    ]
-
-
-    # --------------------------------------
+    # --------------------------------------------------------
     # Draw all four pointers
-    # --------------------------------------
+    #
+    # IMPORTANT:
+    # Every pointer starts from the exact same center point:
+    #
+    # (120, 67)
+    #
+    # --------------------------------------------------------
+
+    pointer_center_x = width // 2
+    pointer_center_y = height // 2
 
     for i in range(4):
 
         length = pointer_lengths[i]
 
-        # Don't draw a pointer if length is 0
         if length <= 0:
             continue
 
+        angle = math.radians(directions[i])
 
-        cx, cy = centers[i]
-
-
-        # Convert degrees to radians
-        angle = math.radians(
-            directions[i]
-        )
-
-
-        # Calculate pointer endpoint
         end_x = (
-            cx
-            + length * math.cos(angle)
+            pointer_center_x
+            + math.cos(angle) * length
         )
 
         end_y = (
-            cy
-            + length * math.sin(angle)
+            pointer_center_y
+            + math.sin(angle) * length
         )
 
-
-        # ----------------------------------
-        # Pointer line
-        # ----------------------------------
-
+        # Pointer
         draw.line(
-            (cx, cy, end_x, end_y),
-            fill=(30, 30, 30),
-            width=4
-        )
-
-
-        # ----------------------------------
-        # Pointer tip
-        # ----------------------------------
-
-        draw.ellipse(
             (
-                end_x - 3,
-                end_y - 3,
-                end_x + 3,
-                end_y + 3
+                pointer_center_x,
+                pointer_center_y,
+                end_x,
+                end_y
             ),
-            fill=(30, 30, 30)
+            fill=(0, 0, 0),
+            width=3
         )
 
 
-    # --------------------------------------
-    # Highlight active region
-    # --------------------------------------
+    # --------------------------------------------------------
+    # Draw a small center point
+    #
+    # This makes it visually obvious that all pointers
+    # originate from the exact same center.
+    # --------------------------------------------------------
 
-    if active_region == 0:
+    center_radius = 3
 
-        draw.rectangle(
-            (1, 1, 118, 65),
-            outline=(255, 255, 255),
-            width=2
-        )
-
-    elif active_region == 1:
-
-        draw.rectangle(
-            (121, 1, 238, 65),
-            outline=(255, 255, 255),
-            width=2
-        )
-
-    elif active_region == 2:
-
-        draw.rectangle(
-            (1, 68, 118, 133),
-            outline=(255, 255, 255),
-            width=2
-        )
-
-    elif active_region == 3:
-
-        draw.rectangle(
-            (121, 68, 238, 133),
-            outline=(255, 255, 255),
-            width=2
-        )
-
-
-    # --------------------------------------
-    # Send image to PiTFT
-    # --------------------------------------
-
-    disp.image(
-        image,
-        ROTATION
+    draw.ellipse(
+        (
+            pointer_center_x - center_radius,
+            pointer_center_y - center_radius,
+            pointer_center_x + center_radius,
+            pointer_center_y + center_radius
+        ),
+        fill=(0, 0, 0)
     )
 
 
-# ==========================================
-# Main loop
-# ==========================================
+    # --------------------------------------------------------
+    # Button A
+    #
+    # Press A:
+    # Switch to the next region
+    # Automatically stop current pointer
+    # --------------------------------------------------------
 
-print("==========================================")
-print("PiTFT Pointer started")
-print("==========================================")
-print("Button A: switch region")
-print("Button B: start / stop pointer growth")
-print("Press Ctrl+C to exit")
-print("==========================================")
+    current_A = buttonA.value
 
+    if previous_A and not current_A:
 
-try:
+        active_region = (active_region + 1) % 4
 
-    while True:
+        # Stop growing when switching region
+        pointer_growing = False
 
+        print(
+            "Active region:",
+            region_names[active_region]
+        )
 
-        # ==================================
-        # BUTTON A
-        #
-        # One press = switch region
-        # ==================================
+        time.sleep(0.15)
 
-        current_A = buttonA.value
-
-
-        # Detect a NEW press:
-        # previous = not pressed
-        # current  = pressed
-
-        if previous_A and not current_A:
-
-            # Move to next region
-            active_region = (
-                active_region + 1
-            ) % 4
+    previous_A = current_A
 
 
-            # Stop pointer growth
-            # when switching regions
-            pointer_growing = False
+    # --------------------------------------------------------
+    # Button B
+    #
+    # Press B:
+    # Start / stop pointer growth
+    #
+    # Press 1 -> start
+    # Press 2 -> stop
+    # Press 3 -> continue
+    # --------------------------------------------------------
 
+    current_B = buttonB.value
+
+    if previous_B and not current_B:
+
+        pointer_growing = not pointer_growing
+
+        if pointer_growing:
 
             print(
-                "Active region:",
+                "Pointer STARTED:",
+                region_names[active_region]
+            )
+
+        else:
+
+            print(
+                "Pointer STOPPED:",
+                region_names[active_region]
+            )
+
+        time.sleep(0.15)
+
+    previous_B = current_B
+
+
+    # --------------------------------------------------------
+    # Grow active pointer
+    # --------------------------------------------------------
+
+    if pointer_growing:
+
+        if pointer_lengths[active_region] < MAX_POINTER_LENGTH:
+
+            pointer_lengths[active_region] += GROWTH_SPEED
+
+            if pointer_lengths[active_region] > MAX_POINTER_LENGTH:
+
+                pointer_lengths[active_region] = MAX_POINTER_LENGTH
+
+        else:
+
+            pointer_growing = False
+
+            print(
+                "Pointer reached maximum length:",
                 region_names[active_region]
             )
 
 
-            # Small debounce delay
-            time.sleep(0.15)
+    # --------------------------------------------------------
+    # Send image to PiTFT
+    # --------------------------------------------------------
 
+    disp.image(image, rotation)
 
-        previous_A = current_A
-
-
-        # ==================================
-        # BUTTON B
-        #
-        # First press  = START
-        # Second press = STOP
-        # Third press  = START
-        # ...
-        # ==================================
-
-        current_B = buttonB.value
-
-
-        # Detect a NEW press
-
-        if previous_B and not current_B:
-
-            # Toggle growth state
-            pointer_growing = not pointer_growing
-
-
-            if pointer_growing:
-
-                print(
-                    "Pointer STARTED:",
-                    region_names[active_region]
-                )
-
-            else:
-
-                print(
-                    "Pointer STOPPED:",
-                    region_names[active_region]
-                )
-
-
-            # Small debounce delay
-            time.sleep(0.15)
-
-
-        previous_B = current_B
-
-
-        # ==================================
-        # Grow the active pointer
-        # ==================================
-
-        if pointer_growing:
-
-            if (
-                pointer_lengths[active_region]
-                < MAX_POINTER_LENGTH
-            ):
-
-                pointer_lengths[active_region] += (
-                    GROWTH_SPEED
-                )
-
-
-                # Make sure we don't exceed max
-                if (
-                    pointer_lengths[active_region]
-                    > MAX_POINTER_LENGTH
-                ):
-
-                    pointer_lengths[active_region] = (
-                        MAX_POINTER_LENGTH
-                    )
-
-
-            else:
-
-                # Automatically stop when
-                # maximum length is reached
-                pointer_growing = False
-
-                print(
-                    "Pointer reached maximum length:",
-                    region_names[active_region]
-                )
-
-
-        # ==================================
-        # Update display
-        # ==================================
-
-        draw_screen()
-
-
-        # Small delay
-        time.sleep(0.03)
-
-
-except KeyboardInterrupt:
-
-    print("\nStopping PiTFT Pointer...")
-
-
-finally:
-
-    # Turn off backlight when program exits
-    backlight.value = False
-
-    print("PiTFT Pointer stopped.")
+    time.sleep(0.03)
