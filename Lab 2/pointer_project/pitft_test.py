@@ -1,4 +1,4 @@
-```python
+
 import time
 import math
 import digitalio
@@ -481,4 +481,3 @@ finally:
     backlight.value = False
 
     print("PiTFT Pointer stopped.")
-```
