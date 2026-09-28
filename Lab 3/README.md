@@ -107,10 +107,14 @@ Note that the Piper command line changed in version 1.x — voices are now downl
 The demo script also shows `--output-raw`, which streams audio to the speaker as it is generated rather than writing a file first. Listen for the difference in how quickly speech begins. In a conversational system this gap is the thing your user experiences as responsiveness.
 
 \*\***Write your own shell file to use your favorite of these TTS engines to have your Pi greet you by name.**\*\*
-(This shell file should be saved to your own repo for this lab.)
+
+I wrote flora_greeting.sh in the speech-scripts folder.
 
 \*\***Then answer: Is the same greeting, in these different voices, the same greeting? Describe one concrete way the voice changed what the utterance seemed to mean or who seemed to be speaking.**\*\*
 
+I don't think the same greeting feels exactly the same when spoken in different voices, even if the words are identical. 
+
+For example, one voice sounded more robotic and formal, which made the greeting feel like a system notification. In comparison, the more natural Piper voice made “Hello Flora” feel more like it was coming from a person or an assistant speaking directly to me.
 ## B. Speech to Text
 
 We use [faster-whisper](https://github.com/SYSTRAN/faster-whisper), a reimplementation of OpenAI's Whisper model that runs several times faster on CPU and does not require PyTorch. All processing happens on the Pi; nothing is sent to a server.
@@ -131,7 +135,40 @@ Available sizes, smallest first: `tiny.en`, `base.en`, `small.en`, `medium.en`. 
 
 \*\***Record a few seconds of your own speech (`arecord -d 5 -f cd -c 1 -r 16000 test.wav`) and transcribe it with at least two model sizes. Report the real-time factor for each. At what point does the accuracy improvement stop being worth the delay, for a system that has to answer you?**\*\*
 
-\*\***Write your own script that verbally asks for a numerical input (a phone number, zipcode, number of pets) and records the answer the respondent provides.**\*\* Numbers are a good stress test — transcription systems make characteristic errors on digit strings, and you will want to know what they are before you design around them.
+For a conversational system, I don't think this small improvement is worth the additional delay. Once the model can correctly understand the meaning of the user's question, I would prioritize lower latency over minor improvements in transcription.
+
+```
+(.venv) pi@raspberrypiflora130:~/Interactive-Lab-Hub/Lab 3/speech-scripts $ python transcribe.py test.wav --model base.en
+
+Test, test, 1, 2, 3, 1, 2, 3, test.
+
+model            base.en (int8, beam=1)
+audio duration   5.00s
+model load       2.26s
+transcription    2.45s
+real-time factor 0.49x
+
+(Model load is a one-time cost per process. In an interactive system you load once and keep the model resident  which is what listen.py does.)
+(.venv) pi@raspberrypiflora130:~/Interactive-Lab-Hub/Lab 3/speech-scripts $ python transcribe.py test.wav --model base.en
+
+Test, test, 1, 2, 3, 1, 2, 3, test.
+
+model            base.en (int8, beam=1)
+audio duration   5.00s
+model load       0.67s
+transcription    2.25s
+real-time factor 0.45x
+
+(Model load is a one-time cost per process. In an interactive system you load once and keep the model resident  which is what listen.py does.)
+```
+
+\*\***Write your own script that verbally asks for a numerical input (a phone number, zipcode, number of pets) and records the answer the respondent provides.**\*\* 
+
+I asked the number of tote bags, and then record the answer as answer.wav in the folder
+
+
+
+
 
 ## C. Turn-taking: knowing when someone has stopped talking
 
@@ -169,11 +206,30 @@ Storyboard and/or use a Verplank diagram to design a speech-enabled device. (Stu
 
 \*\***Post your storyboard and diagram here.**\*\*
 
-Write out what you imagine the dialogue to be. Use cards, post-its, or whatever method helps you develop alternatives or group responses.
+My idea is a small owl-shaped speech assistant that sits on the user’s shoulder. The user presses the owl’s wing to activate listening, then whispers their message. After detecting a short pause, the owl stops listening, processes the speech, and repeats the message aloud at a normal volume. The user can press the wing again to cancel or stop the owl.
+
+<img width="586" height="442" alt="截屏 2026-09-27 20 46 35" src="https://github.com/user-attachments/assets/c7446fb1-8e5c-4cbb-83b9-562522462371" />
+
+**User whispers:** “Excuse me, Is this seat taken? Yes”
+
+**[Owl waits for 1.5 seconds of silence to determine that the user has finished speaking by ending "Yes".]**
+
+**[Owl processes the speech for approximately 1 seconds.]**
+
+**Owl:** “Excuse me, is this seat taken?”
+
+**Other person:** “No, you can sit here.”
 
 \*\***Please describe and document your process.**\*\*
 
-Your script should include the pauses. Where does your device wait, and for how long? You now know from Part C that this is a parameter you have to choose, not something that happens for free.
+
+I started by thinking about situations where speech is useful but speaking at a normal volume may be difficult or uncomfortable. This led me to the idea of a small wearable speaker that could translate quiet speech into normal-volume speech.
+
+I chose an owl-shaped device that sits on the user's shoulder because its position keeps the microphone close to the user's mouth without requiring them to hold another device. I then mapped the interaction into three main stages: listening to the user's quiet speech, processing it with speech-to-text, and speaking the message aloud with text-to-speech.
+
+While developing the dialogue, I realized that deciding when the user has finished speaking is an important part of the interaction. I chose approximately 1–1.5 seconds of silence as the initial threshold. A shorter pause could interrupt users who pause naturally while speaking, while a longer pause could make the conversation feel unresponsive. I also added simple visual feedback so the user can tell when the owl is listening and processing.
+
+
 
 ## E. Acting out the dialogue
 
