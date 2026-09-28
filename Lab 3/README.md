@@ -238,6 +238,10 @@ Find a partner, and *without sharing the script with your partner* try out the d
 \*\***Describe if the dialogue seemed different than what you imagined when it was acted out, and how.**\*\*
 
 
+https://github.com/user-attachments/assets/e9c63922-981b-4abe-ab8e-8816889b7516
+
+
+
 ---
 
 # Lab 3 Part 2
