@@ -38,39 +38,34 @@ PIPER_MODEL = "en_US-lessac-medium"
 # LED
 # =========================
 
-led = PWMLED(LED_PIN)
+# led = PWMLED(LED_PIN)
 
 
 def led_idle():
-    led.value = 0
-
+    print("[STATE] IDLE")
 
 def led_aware():
-    # 有人在附近讲话
-    led.value = 0.3
-
+    print("[STATE] AWARE")
 
 def led_listening():
-    # 用户正在对猫头鹰讲话
-    led.value = 1.0
-
+    print("[STATE] LISTENING")
 
 def led_speaking():
-    led.value = 0.6
+    print("[STATE] SPEAKING")
 
 
 processing = False
 
 
-def blink_processing():
-    global processing
+# def blink_processing():
+#     global processing
 
-    while processing:
-        led.value = 0.2
-        time.sleep(0.25)
+#     while processing:
+#         led.value = 0.2
+#         time.sleep(0.25)
 
-        led.value = 0.8
-        time.sleep(0.25)
+#         led.value = 0.8
+#         time.sleep(0.25)
 
 
 # =========================
@@ -399,4 +394,4 @@ except KeyboardInterrupt:
 
 finally:
 
-    led.off()
+    # led.off()
