@@ -2,45 +2,23 @@
 
 **NAMES OF COLLABORATORS HERE**
 
+Flora Zhang
+
 [![Watch the video](https://user-images.githubusercontent.com/1128669/135009222-111fe522-e6ba-46ad-b6dc-d1633d21129c.png)](https://youtu.be/LZ0VJClIlRI?si=Yy84mcyVYuVV19mn)
 
-In this lab, we want you to design interaction with a speech-enabled device — something that listens and talks to you. This device can do anything *but* control lights (since we already did that in Lab 1). First, we want you to storyboard what you imagine the conversational interaction to be like. Then you will use wizarding techniques to elicit examples of what people might say, ask, or respond. We then want you to use the examples collected from at least two other people to inform the redesign of the device.
-
-We will focus on **audio** as the main modality for interaction to start; these general techniques can be extended to **video**, **haptics** or other interactive mechanisms in the second part of the Lab.
-
-A note on what you are building with. Speech interfaces are usually taught as two boxes — speech-in, speech-out — and that framing hides the part that actually determines whether an interaction works. Between listening and speaking sits the question of **whose turn it is**: when does the device decide you have finished talking, and how long does it make you wait before it answers? This lab gives you direct control over both, and we will ask you to notice what changes when you move them.
 
 ## Prep for Part 1: Get the Latest Content and Pick up Additional Parts
 
 Please check instructions in [prep.md](prep.md) and complete the setup.
 
-### Pick up Web Camera If You Don't Have One
+Pick up Web Camera If You Don't Have One
 
-Students who have not already received a web camera will receive their Webcam and at the beginning of lab. If you cannot make it to class this week, please contact the TAs to ensure you get these.
+Get the Latest Content
 
-### Get the Latest Content
-
-As always, pull updates from the class Interactive-Lab-Hub to both your Pi and your own GitHub repo.
-
-**\[recommended\]** Option 1: On the Pi, `cd` to your `Interactive-Lab-Hub`, pull the updates from upstream (class lab-hub) and push the updates back to your own GitHub repo. You will need the *personal access token* for this.
-
-```
-pi@ixe00:~$ cd Interactive-Lab-Hub
-pi@ixe00:~/Interactive-Lab-Hub $ git pull upstream Fall2026
-pi@ixe00:~/Interactive-Lab-Hub $ git add .
-pi@ixe00:~/Interactive-Lab-Hub $ git commit -m "get lab3 updates"
-pi@ixe00:~/Interactive-Lab-Hub $ git push
-```
-
-Option 2: On your own GitHub repo, create a pull request to get updates from the class Interactive-Lab-Hub. After you have the latest updates online, go to your Pi, `cd` to your `Interactive-Lab-Hub` and use `git pull`.
-
----
 
 # Part 1
 
 ## Setup
-
-Create and activate a virtual environment for this lab:
 
 ```
 pi@ixe00:~$ cd Interactive-Lab-Hub/Lab\ 3
@@ -68,11 +46,8 @@ Then run the setup script, which installs the classic speech synthesizers, downl
 (.venv) $ ./setup.sh
 ```
 
-Check your audio devices before going further. `arecord -l` lists capture devices and `aplay -l` lists playback devices; if your webcam microphone or Bluetooth speaker does not appear, fix that first — every script below assumes the system defaults are the ones you want.
 
 ## A. Text to Speech
-
-Your Pi can speak in several quite different ways, and the differences are audible in a way that matters for design. In `speech-scripts/` there are shell scripts for each.
 
 ### The classic engines
 
@@ -86,13 +61,8 @@ Your Pi can speak in several quite different ways, and the differences are audib
 (.venv) $ ./festival_demo.sh
 ```
 
-You can run these `.sh` files by typing `./filename`, and read one with `cat filename`. You can also play audio files directly with `aplay filename` — try `aplay lookdave.wav`.
-
-These are all decades-old technology and they sound like it. `espeak-ng` is a *formant synthesizer*: it generates speech from an acoustic model of the vocal tract, which is why it sounds robotic but also why the whole thing fits in a couple of megabytes and responds instantly. `festival` is *concatenative*: they stitch together recorded fragments of a real speaker, which sounds more human but breaks audibly at the seams.
-
 ### Neural TTS with Piper
 
-Note that the Piper command line changed in version 1.x — voices are now downloaded explicitly with `python3 -m piper.download_voices`, and you invoke it as `python3 -m piper`. Tutorials you find online may show the old `echo ... | piper --model ...` form, which no longer works. Browse the [voice samples](https://rhasspy.github.io/piper-samples) and download a different one if you'd like:
 
 ```
 (.venv) $ python3 -m piper.download_voices en_US-lessac-medium
@@ -104,7 +74,7 @@ Note that the Piper command line changed in version 1.x — voices are now downl
 (.venv) $ ./piper_demo.sh
 ```
 
-The demo script also shows `--output-raw`, which streams audio to the speaker as it is generated rather than writing a file first. Listen for the difference in how quickly speech begins. In a conversational system this gap is the thing your user experiences as responsiveness.
+
 
 \*\***Write your own shell file to use your favorite of these TTS engines to have your Pi greet you by name.**\*\*
 
@@ -115,6 +85,7 @@ I wrote flora_greeting.sh in the speech-scripts folder.
 I don't think the same greeting feels exactly the same when spoken in different voices, even if the words are identical. 
 
 For example, one voice sounded more robotic and formal, which made the greeting feel like a system notification. In comparison, the more natural Piper voice made “Hello Flora” feel more like it was coming from a person or an assistant speaking directly to me.
+
 ## B. Speech to Text
 
 We use [faster-whisper](https://github.com/SYSTRAN/faster-whisper), a reimplementation of OpenAI's Whisper model that runs several times faster on CPU and does not require PyTorch. All processing happens on the Pi; nothing is sent to a server.
@@ -131,7 +102,6 @@ The transcript is not the interesting output here — the timings are. Run it ag
 #  noted that the first run may take longer because the model is downloaded, and that the HF unauthenticated-request warning is expected and not an error.
 ```
 
-Available sizes, smallest first: `tiny.en`, `base.en`, `small.en`, `medium.en`. The `.en` variants are English-only and faster than their multilingual counterparts at the same size.
 
 \*\***Record a few seconds of your own speech (`arecord -d 5 -f cd -c 1 -r 16000 test.wav`) and transcribe it with at least two model sizes. Report the real-time factor for each. At what point does the accuracy improvement stop being worth the delay, for a system that has to answer you?**\*\*
 
@@ -167,12 +137,8 @@ real-time factor 0.45x
 I asked the number of tote bags, and then record the answer as answer.wav in the folder
 
 
-
-
-
 ## C. Turn-taking: knowing when someone has stopped talking
 
-Everything so far has worked on fixed audio files. A real conversational device does not get told when to start and stop recording — it has to decide. This is the problem that makes speech interfaces hard, and it is mostly not a speech recognition problem.
 
 We use a **voice activity detector** (VAD) to segment the microphone stream into utterances. `listen.py` runs Silero VAD continuously and hands each detected utterance to faster-whisper:
 
@@ -246,43 +212,81 @@ https://github.com/user-attachments/assets/e9c63922-981b-4abe-ab8e-8816889b7516
 
 # Lab 3 Part 2
 
-For Part 2, you will redesign the interaction with the speech-enabled device using the data collected, as well as feedback from part 1.
 
 ## Prep for Part 2
 
-1. What are concrete things that could use improvement in the design of your device? For example: wording, timing, anticipation of misunderstandings.
-2. What are other modes of interaction *beyond speech* that you might also use to clarify how to interact? In particular: how does someone know when the device is listening, and when it is thinking? You have a screen and an LED.
-3. Make a new storyboard, diagram and/or script based on these reflections.
-4. (optional) Integrate [input devices](inputs.md) in the system
+One major improvement was making the interaction more automatic. In my original design, the user needed to manually activate the owl before speaking. In the redesigned version, the system continuously monitors microphone volume and uses different sound thresholds to decide what is happening.
+
+I designed three main states:
+
+Idle: Background noise stays below the threshold, so the owl does nothing.
+
+Aware: A moderate sound level indicates that someone nearby may be speaking, but the owl does not record or respond yet.
+
+Listening: A louder signal, which is more likely to come from the wearer because the microphone is closer to their mouth, triggers recording.
+
+After the user stops speaking for a short period of time, the system transcribes the recorded speech and repeats it aloud through the speaker.
+
+
 
 ## Prototype your system
 
-The system should:
-* use the Raspberry Pi
-* use one or more sensors
-* require participants to speak to it
+The redesigned interaction is:
 
-*Document how the system works.*
+Background noise → Idle
 
-*Include videos or screencaptures of both the system and the controller.*
+Nearby speech → Aware
+
+Wearer speaks close to the microphone → Listening
+
+User stops speaking → Processing
+
+Whisper converts speech to text → Piper converts text back to speech
+
+Owl repeats the message aloud → Return to Idle
+
+The current system uses the microphone as its primary sensing input. Because the owl is intended to sit on the user's shoulder, the microphone is physically closer to the wearer than to other people. The prototype therefore uses sound intensity as a simple way of estimating whether the wearer or someone farther away is speaking.
+
+Code file: (https://github.com/Flora130/Interactive-Lab-Hub/edit/Fall2026/Lab%203/owl_project)
 
 ## Test the system
 
-Try to get at least two people to interact with your system. (Ideally, you would inform them that there is a wizard *after* the interaction, but we recognize that can be hard.)
+In the current prototype, the system states are displayed in the terminal as IDLE, AWARE, LISTENING, PROCESSING, and SPEAKING. In a future version, these states could be communicated through the owl's LED eyes.
 
-Answer the following:
+Video: (https://drive.google.com/file/d/1SgClAwjyc51_FreB8Bq7BL5Hw4T5WAG5/view?usp=sharing)
 
 ### What worked well about the system and what didn't?
-\*\**your answer here*\*\*
+
+The overall speech interaction worked well. During testing, the device did not trigger randomly under normal background noise, and it was able to recognize and accurately repeat short spoken sentences. The different sound thresholds also provided a simple way to distinguish background noise, nearby conversation, and speech directed toward the device.
+
+The pre-buffer significantly improved transcription because the beginning of the user's sentence was no longer missed when the listening state was triggered.
+
+One limitation is that sound intensity alone cannot reliably identify the wearer in every environment. A nearby loud sound or another person speaking close to the microphone could still trigger the listening state. The current system also has only a small number of preset phrases. Testers suggested adding more common expressions to make the device more useful in everyday situations.
+
 
 ### What worked well about the controller and what didn't?
-\*\**your answer here*\*\*
+
+The controller successfully managed the transitions between the different interaction states based on microphone input. The thresholds prevented low-level background noise from triggering the system, while louder close-range speech could automatically begin recording. Silence detection also allowed the device to stop recording without requiring the user to press a button.
+
+One challenge was choosing the correct thresholds. If the listening threshold is too low, environmental speech may trigger the device. If it is too high, quiet speech from the wearer may not be detected. These values therefore need to be calibrated for the microphone, physical placement of the owl, and surrounding environment.
+
+The current controller also communicates its state mainly through terminal messages. Adding LED feedback would make the interaction much easier to understand without looking at the computer.
 
 ### What lessons can you take away from the WoZ interactions for designing a more autonomous version of the system?
-\*\**your answer here*\*\*
+
+One important lesson is that users should not need to think too much about when the device is ready to listen. The interaction felt more natural when the device automatically detected speech instead of requiring an explicit button press.
+
+The testing also showed that turn-taking is very important. The system needs to recognize the beginning of the user's speech without cutting off the first words, while also waiting long enough after a pause before deciding that the user is finished. The pre-buffer and silence threshold were both important for making the interaction feel more reliable.
+
+Feedback also suggested that predefined common phrases could complement direct transcription. A more autonomous version could combine accurate repetition with a larger library of frequently used expressions.
 
 ### How could you use your system to create a dataset of interaction? What other sensing modalities would make sense to capture?
-\*\**your answer here*\*\*
+
+The system could record interaction data such as microphone audio, RMS volume, detected state, transcription, recording duration, silence duration, and whether the final speech output was correct. These data could be compared across users and environments to determine better thresholds for distinguishing the wearer from surrounding speakers.
+
+
+Additional sensing modalities could improve the system. For example, an IMU could detect whether the owl is currently being worn on the user's shoulder, while proximity or directional audio sensing could help estimate whether speech is coming from the wearer or another person. Visual or LED feedback could also be logged to study whether users correctly understand the device's listening and processing states.
+
 
 <details>
   <summary><strong>Submission Cleanup Reminder (Click to Expand)</strong></summary>
