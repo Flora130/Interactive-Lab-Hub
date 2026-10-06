@@ -1,13 +1,12 @@
 import time
-import queue
 import subprocess
 import threading
+import sys
 
 import numpy as np
 import sounddevice as sd
 import soundfile as sf
 
-from gpiozero import PWMLED
 from faster_whisper import WhisperModel
 
 
@@ -15,12 +14,10 @@ from faster_whisper import WhisperModel
 # SETTINGS
 # =========================
 
-LED_PIN = 17
-
 SAMPLE_RATE = 16000
 CHANNELS = 1
 
-# 这些值后面需要根据你的麦克风重新 calibrate
+# 这些值之后根据实际麦克风数据继续 calibrate
 SOUND_THRESHOLD = 0.015
 WHISPER_THRESHOLD = 0.035
 
@@ -35,37 +32,34 @@ PIPER_MODEL = "en_US-lessac-medium"
 
 
 # =========================
-# LED
+# STATE / LED PLACEHOLDER
 # =========================
 
-# led = PWMLED(LED_PIN)
-
-
 def led_idle():
-    print("[STATE] IDLE")
+    print("\n[STATE] IDLE")
+
 
 def led_aware():
-    print("[STATE] AWARE")
+    print("\n[STATE] AWARE")
+
 
 def led_listening():
-    print("[STATE] LISTENING")
+    print("\n[STATE] LISTENING")
+
 
 def led_speaking():
-    print("[STATE] SPEAKING")
+    print("\n[STATE] SPEAKING")
 
 
 processing = False
 
 
-# def blink_processing():
-#     global processing
+def blink_processing():
+    global processing
 
-#     while processing:
-#         led.value = 0.2
-#         time.sleep(0.25)
-
-#         led.value = 0.8
-#         time.sleep(0.25)
+    while processing:
+        print("[STATE] PROCESSING")
+        time.sleep(0.5)
 
 
 # =========================
@@ -84,7 +78,6 @@ print("Whisper ready.")
 
 
 def transcribe(filename):
-
     segments, info = whisper_model.transcribe(
         filename,
         beam_size=5
@@ -103,31 +96,24 @@ def transcribe(filename):
 # =========================
 
 def speak(text):
-
-    print("OWL:", text)
+    print(f"\nOWL: {text}")
 
     led_speaking()
 
     piper_process = subprocess.Popen(
-
         [
-            "python3",
+            sys.executable,
             "-m",
             "piper",
-
             "--model",
             PIPER_MODEL,
-
             "--output-raw"
         ],
-
         stdin=subprocess.PIPE,
-
         stdout=subprocess.PIPE
     )
 
     aplay_process = subprocess.Popen(
-
         [
             "aplay",
             "-r",
@@ -138,17 +124,17 @@ def speak(text):
             "raw",
             "-"
         ],
-
         stdin=piper_process.stdout
     )
 
     piper_process.stdin.write(
-        text.encode()
+        (text + "\n").encode("utf-8")
     )
 
     piper_process.stdin.close()
 
     aplay_process.wait()
+    piper_process.wait()
 
     led_idle()
 
@@ -158,29 +144,19 @@ def speak(text):
 # =========================
 
 def check_command(text):
-
     text_lower = text.lower()
 
     if "excuse me" in text_lower:
-
         speak("Excuse me.")
-
         return True
-
 
     if "thank you" in text_lower:
-
         speak("Thank you!")
-
         return True
-
 
     if "sorry" in text_lower:
-
         speak("I'm sorry.")
-
         return True
-
 
     return False
 
@@ -190,8 +166,7 @@ def check_command(text):
 # =========================
 
 def record_until_silence():
-
-    print("Listening...")
+    print("\nListening...")
 
     led_listening()
 
@@ -200,13 +175,11 @@ def record_until_silence():
     silence_start = None
 
     block_duration = 0.1
-
     block_size = int(
         SAMPLE_RATE * block_duration
     )
 
     while True:
-
         audio = sd.rec(
             block_size,
             samplerate=SAMPLE_RATE,
@@ -226,10 +199,14 @@ def record_until_silence():
 
         print(
             f"\rRecording RMS: {rms:.4f}",
-            end=""
+            end="",
+            flush=True
         )
 
-        # 检测 silence
+        # -----------------
+        # SILENCE DETECTION
+        # -----------------
+
         if rms < SILENCE_THRESHOLD:
 
             if silence_start is None:
@@ -239,13 +216,10 @@ def record_until_silence():
                 time.time() - silence_start
                 >= SILENCE_DURATION
             ):
-
                 print("\nUser stopped speaking.")
-
                 break
 
         else:
-
             silence_start = None
 
 
@@ -267,7 +241,6 @@ def record_until_silence():
 # =========================
 
 def process_speech():
-
     global processing
 
     filename = record_until_silence()
@@ -280,7 +253,7 @@ def process_speech():
 
     blink_thread.start()
 
-    print("Transcribing...")
+    print("\nTranscribing...")
 
     text = transcribe(filename)
 
@@ -292,20 +265,23 @@ def process_speech():
     print(text)
 
     if not text:
-
+        print("No speech detected.")
         led_idle()
-
         return
 
 
-    # 看是不是 command
+    # -----------------
+    # CHECK COMMANDS
+    # -----------------
+
     if check_command(text):
-
         return
 
 
-    # 普通情况：
-    # 猫头鹰直接大声复述用户内容
+    # -----------------
+    # NORMAL REPEAT
+    # -----------------
+
     speak(text)
 
 
@@ -314,7 +290,6 @@ def process_speech():
 # =========================
 
 def main():
-
     print("Owl started.")
 
     led_idle()
@@ -344,51 +319,55 @@ def main():
 
         print(
             f"\rRMS: {rms:.4f}",
-            end=""
+            end="",
+            flush=True
         )
 
-        # -----------------
+
+        # =================
         # IDLE
-        # -----------------
+        # =================
 
         if rms < SOUND_THRESHOLD:
+            pass
 
-            led_idle()
 
-
-        # -----------------
+        # =================
         # AWARE
-        # -----------------
+        # =================
 
         elif rms < WHISPER_THRESHOLD:
+            print(
+                f"\n[STATE] AWARE - RMS {rms:.4f}"
+            )
 
-            led_aware()
 
-
-        # -----------------
+        # =================
         # LISTENING
-        # -----------------
+        # =================
 
         else:
-
             print(
-                "\nUser detected."
+                f"\nUser detected. RMS = {rms:.4f}"
             )
 
             process_speech()
 
-            # 防止 speaker 声音
-            # 又被 microphone 捕捉
+            # 防止猫头鹰自己播放的声音
+            # 马上再次触发麦克风
             time.sleep(0.8)
 
 
 # =========================
+# START
+# =========================
 
 try:
-
     main()
 
 except KeyboardInterrupt:
-
     print("\nStopping Owl.")
 
+except Exception as e:
+    print("\nError:")
+    print(e)
