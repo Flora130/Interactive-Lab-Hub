@@ -392,6 +392,3 @@ except KeyboardInterrupt:
 
     print("\nStopping Owl.")
 
-finally:
-
-    # led.off()
