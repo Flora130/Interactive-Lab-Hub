@@ -247,7 +247,7 @@ Owl repeats the message aloud → Return to Idle
 
 The current system uses the microphone as its primary sensing input. Because the owl is intended to sit on the user's shoulder, the microphone is physically closer to the wearer than to other people. The prototype therefore uses sound intensity as a simple way of estimating whether the wearer or someone farther away is speaking.
 
-Code file: (https://github.com/Flora130/Interactive-Lab-Hub/edit/Fall2026/Lab%203/owl_project)
+Code file: ([https://github.com/Flora130/Interactive-Lab-Hub/edit/Fall2026/Lab%203/owl_project](https://github.com/Flora130/Interactive-Lab-Hub/tree/Fall2026/Lab%203/owl_project))
 
 ## Test the system
 
