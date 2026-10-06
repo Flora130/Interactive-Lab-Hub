@@ -12,47 +12,38 @@ import soundfile as sf
 from faster_whisper import WhisperModel
 
 
-# ============================================================
 # SETTINGS
-# ============================================================
 
 SAMPLE_RATE = 16000
 CHANNELS = 1
 
-# 每个音频 block 的长度
+
 BLOCK_DURATION = 0.1
 BLOCK_SIZE = int(SAMPLE_RATE * BLOCK_DURATION)
 
-# ------------------------------------------------------------
 # Sound thresholds
-# ------------------------------------------------------------
 
-# 低于这个值：IDLE
+# IDLE
 SOUND_THRESHOLD = 0.015
 
-# 超过这个值：认为用户在靠近猫头鹰讲话
+# user speaking
 WHISPER_THRESHOLD = 0.035
 
-# 录音过程中，低于这个值认为是 silence
+#  silence
 SILENCE_THRESHOLD = 0.012
 
-# 连续安静多久后停止录音
 SILENCE_DURATION = 1.2
 
-# ------------------------------------------------------------
-# Pre-buffer
-# ------------------------------------------------------------
 
-# 保存触发之前最近多少秒的声音
+
 PRE_BUFFER_DURATION = 0.8
 
 PRE_BUFFER_BLOCKS = int(
     PRE_BUFFER_DURATION / BLOCK_DURATION
 )
 
-# ------------------------------------------------------------
+
 # Files / Models
-# ------------------------------------------------------------
 
 AUDIO_FILE = "/tmp/owl_recording.wav"
 
@@ -63,9 +54,6 @@ PIPER_MODEL = "en_US-lessac-medium"
 VOICES_DIR = "/home/pi/Interactive-Lab-Hub/Lab 3/voices"
 
 
-# ============================================================
-# AUDIO QUEUE
-# ============================================================
 
 audio_queue = queue.Queue()
 
@@ -80,10 +68,6 @@ def audio_callback(indata, frames, time_info, status):
 
     audio_queue.put(indata.copy())
 
-
-# ============================================================
-# STATE DISPLAY
-# ============================================================
 
 def state_idle():
     print("\n[STATE] IDLE")
@@ -107,9 +91,6 @@ def state_speaking():
     print("\n[STATE] SPEAKING")
 
 
-# ============================================================
-# WHISPER
-# ============================================================
 
 print("Loading Whisper...")
 
@@ -142,10 +123,6 @@ def transcribe(filename):
 
     return " ".join(text_parts).strip()
 
-
-# ============================================================
-# PIPER
-# ============================================================
 
 def speak(text):
     """
@@ -201,11 +178,10 @@ def speak(text):
     aplay_process.wait()
     piper_process.wait()
 
-    # 清掉猫头鹰自己说话期间
-    # microphone 收到的声音
+ 
+    # microphone 
     clear_audio_queue()
 
-    # 给 speaker / microphone 一点缓冲
     time.sleep(0.8)
 
     clear_audio_queue()
@@ -213,9 +189,6 @@ def speak(text):
     state_idle()
 
 
-# ============================================================
-# COMMANDS
-# ============================================================
 
 def check_command(text):
     """
@@ -244,9 +217,7 @@ def check_command(text):
     return False
 
 
-# ============================================================
-# QUEUE UTILITIES
-# ============================================================
+
 
 def clear_audio_queue():
     """
@@ -261,10 +232,7 @@ def clear_audio_queue():
         except queue.Empty:
             break
 
-
-# ============================================================
 # RECORDING
-# ============================================================
 
 def record_until_silence(pre_buffer):
     """
@@ -302,9 +270,9 @@ def record_until_silence(pre_buffer):
             flush=True
         )
 
-        # ----------------------------------------
+       
         # Silence detection
-        # ----------------------------------------
+    
 
         if rms < SILENCE_THRESHOLD:
 
@@ -328,9 +296,7 @@ def record_until_silence(pre_buffer):
             silence_start = None
 
 
-    # ----------------------------------------
-    # Save recording
-    # ----------------------------------------
+
 
     audio = np.concatenate(
         recorded_audio
@@ -348,10 +314,8 @@ def record_until_silence(pre_buffer):
 
     return AUDIO_FILE
 
-
-# ============================================================
 # PROCESS SPEECH
-# ============================================================
+
 
 def process_speech(pre_buffer):
     """
@@ -372,9 +336,8 @@ def process_speech(pre_buffer):
     print(text)
 
 
-    # ----------------------------------------
-    # Empty result
-    # ----------------------------------------
+
+
 
     if not text:
 
@@ -387,9 +350,6 @@ def process_speech(pre_buffer):
         return
 
 
-    # ----------------------------------------
-    # Preset command
-    # ----------------------------------------
 
     if check_command(text):
 
@@ -404,9 +364,7 @@ def process_speech(pre_buffer):
     speak(text)
 
 
-# ============================================================
-# MAIN
-# ============================================================
+
 
 def main():
 
@@ -456,18 +414,10 @@ def main():
             )
 
 
-            # ==================================================
-            # IDLE
-            # ==================================================
-
             if rms < SOUND_THRESHOLD:
 
                 continue
 
-
-            # ==================================================
-            # AWARE
-            # ==================================================
 
             elif rms < WHISPER_THRESHOLD:
 
@@ -476,9 +426,7 @@ def main():
                 continue
 
 
-            # ==================================================
-            # USER DETECTED
-            # ==================================================
+
 
             else:
 
@@ -506,9 +454,6 @@ def main():
                 clear_audio_queue()
 
 
-# ============================================================
-# START
-# ============================================================
 
 try:
 
