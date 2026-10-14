@@ -281,19 +281,30 @@ Your kit includes these [SparkFun Qwiic OLED screens](https://www.sparkfun.com/p
 </p>
 
 
-As you develop your Feast Automata concept, consider where the sensor and actuator need to be placed, what parts move, how electronics are housed, and how the overall form and aesthetics support the interaction.
+My *Itadakimasu Box* is inspired by the Japanese tradition of putting one's hands together and saying "Itadakimasu" before eating. A proximity sensor will be attached to a wearable napkin at chest level to detect the hand gesture, while a microphone recognizes the spoken phrase. A servo motor will be installed at the back of the utensil box to control the lid, which opens only after both actions are completed. A light sensor inside the box will detect unauthorized opening and trigger an unusual sound effect. The electronic components will be hidden inside or beneath the box, keeping the design clean. The box will feature a minimalist, Japanese-inspired aesthetic to emphasize the sense of ritual before a meal.
 
 **\*\*\*Draw 5 sketches that explore different physical arrangements for your sensing and actuation.\*\*\***
 
+<img height="400" alt="ChatGPT Image Oct 13, 2026, 11_35_32 PM-1" src="https://github.com/user-attachments/assets/81e44835-97ea-4dd4-8a5f-a8b1b61b3789" />
+<img height="400" alt="ChatGPT Image Oct 13, 2026, 11_35_32 PM-2" src="https://github.com/user-attachments/assets/1a153a80-f9c8-4811-9ed8-ffaad5641103" />
+<img height="400" alt="ChatGPT Image Oct 13, 2026, 11_35_33 PM-3" src="https://github.com/user-attachments/assets/f1afebb4-1da4-435f-acf1-1b5c5b9c3aba" />
+<img height="400" alt="ChatGPT Image Oct 13, 2026, 11_35_34 PM-4" src="https://github.com/user-attachments/assets/b0642e96-cd52-4e7e-a81b-77f37f76ea9e" />
+<img height="400" alt="ChatGPT Image Oct 13, 2026, 11_35_34 PM-5" src="https://github.com/user-attachments/assets/636dd753-73ea-448a-9d3a-93de2bb358c5" />
+
+
 **\*\*\*What questions do these sketches raise? What do you need to physically prototype to answer them?\*\*\***
+
+These sketches raise several questions about the reliability of the sensors and the physical design. First, can the proximity sensor accurately detect when the user's hands are together without being triggered by other movements? Second, how should the servo motor be positioned to open the utensil box smoothly? Third, can the light sensor distinguish between normal opening and forced opening?
+
+To answer these questions, I need to prototype the sensor placement on the wearable napkin and test different distances and angles. I also need to build a simple cardboard box to experiment with the servo mechanism and lid movement. Finally, I will test the light sensor inside the box to see whether it can reliably detect unauthorized opening and trigger sound feedback.
 
 **\*\*\*Pick one design to prototype and explain why.\*\*\***
 
-Build a cardboard or other low-fidelity physical prototype of your design.
+I would like to prototype the servo-controlled utensil box first because it is the easiest to build and test physically. I can use cardboard to create a simple box and attach a servo motor to control the lid. This will help me figure out the best position for the motor, the opening angle, and whether the lid can move smoothly. Once the mechanism works reliably, I can connect it to the proximity sensor and voice recognition system to complete the interaction.
 
 **\*\*\*Document your rough prototype with photos and/or video.\*\*\***
 
----
+[---](https://drive.google.com/file/d/1CD3hB3yAuTPhOCCj3cPDl1wWDBbu1MM9/view?usp=sharing)
 
 ## Part 2
 
