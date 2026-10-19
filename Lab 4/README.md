@@ -208,9 +208,18 @@ Following exploration and reflection from Part 1, complete the "looks like," "wo
 
 #### Build & Integrate: Sensing + Actuation
 
+At first, I planned to place a proximity sensor on a wearable napkin to detect the user’s pre-meal hand gesture. However, the original sensor was not very reliable, so I decided to abandon the napkin-based sensing idea and move all sensing and interaction onto the utensil box itself. I then redesigned the box so that a servo motor on one side controls the rotation of the lid, while a distance sensor on the other side detects whether the utensils have been removed. 
+
+<img width="638" height="352" alt="finalSketch" src="https://github.com/user-attachments/assets/050132b5-f7e2-469c-b86a-87f553f8cc8f" />
 
 
+I first built the servo-driven lid mechanism and connected it to a microphone input, so that the lid would open when the system detected that the user had spoken. After that, I placed the distance sensor on the opposite side of the box, where there was more physical space, and tested its readings to determine thresholds for when utensils were present or removed. Finally, I recorded two audio clips—one for normal dining music and one for a humorous warning—and connected a speaker to complete the full workflow of the box. Through this process, the project evolved from a wearable sensing concept into a more stable and self-contained interactive utensil box.
 
+<p align="center">
+<img height="200" alt="IMG_9252" src="https://github.com/user-attachments/assets/4d4b6ee9-35bb-4ee6-b022-005376415926" />
+<img height="200" alt="IMG_9256" src="https://github.com/user-attachments/assets/8ef53d57-892d-4cd3-b5b1-681af1938eb9" />
+<img height="200" alt="IMG_9257" src="https://github.com/user-attachments/assets/e1f49d93-2ecd-4b5e-95cf-6ee7be14352c" />
+</p>
 
 <details>
 <summary><strong>Optional Extensions </strong></summary>
@@ -339,6 +348,31 @@ This is a playful way to visualize how the expander works, but the same techniqu
 
 The system combines sensing, physical movement, and sound to create a playful dining experience.
 
+[A BRIEF VIDEO](https://drive.google.com/file/d/1FuDocgJ0rPuM5V6Rf5oLHsAleWDmFafb/view?usp=sharing)
+
+
+**Looks Like**
+
+The prototype is a utensil box with a servo-controlled lid. A VCNL4040 proximity sensor is positioned inside the box to detect the presence of utensils, while the servo motor is attached to the lid mechanism. The Raspberry Pi and electronic connections control the system, and a USB microphone and speaker provide voice input and audio feedback.
+<p align="center">
+<img height="200" alt="IMG_9258" src="https://github.com/user-attachments/assets/153a8d1b-9d39-4e3a-8ed9-aa43c966d5bc" />
+
+<img height="200" alt="IMG_9257" src="https://github.com/user-attachments/assets/41e7b1d6-98db-434e-bb5c-277639c621ec" />
+</p>
+
+
+**Works Like**
+
+The system uses sound detection to initiate the dining ritual. When the microphone detects a sound above the threshold, the servo slowly opens the lid. The proximity sensor then detects when the utensils are removed, triggering relaxing background music. If the utensils are removed before the ritual is completed, the speaker plays a funny reminder instead. The user can then speak to complete the ritual and activate the normal music.
+
+<img  height="200" alt="ezgif-1846ea59ff8c1a0b" src="https://github.com/user-attachments/assets/82f67ec5-80e4-486e-9e8d-7b19e84ddf4f" />
+
+
+
+**Acts Like**
+
+The device behaves like a playful dining companion that encourages the user to perform a ritual before eating. Instead of simply storing utensils, it responds to the user's actions through movement and sound. The slow opening movement creates anticipation, while the humorous reminder makes skipping the ritual a playful part of the experience.
+
 #### Interaction Flow
 
 ```mermaid
@@ -358,19 +392,6 @@ flowchart TD
     H -->|Yes| I["Stop warning"]
     I --> E
 ```
-
-**Looks Like**
-
-The prototype is a utensil box with a servo-controlled lid. A VCNL4040 proximity sensor is positioned inside the box to detect the presence of utensils, while the servo motor is attached to the lid mechanism. The Raspberry Pi and electronic connections control the system, and a USB microphone and speaker provide voice input and audio feedback.
-
-**Works Like**
-
-The system uses sound detection to initiate the dining ritual. When the microphone detects a sound above the threshold, the servo slowly opens the lid. The proximity sensor then detects when the utensils are removed, triggering relaxing background music. If the utensils are removed before the ritual is completed, the speaker plays a funny reminder instead. The user can then speak to complete the ritual and activate the normal music.
-
-**Acts Like**
-
-The device behaves like a playful dining companion that encourages the user to perform a ritual before eating. Instead of simply storing utensils, it responds to the user's actions through movement and sound. The slow opening movement creates anticipation, while the humorous reminder makes skipping the ritual a playful part of the experience.
-
 
 #### Code
 
