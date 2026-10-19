@@ -1,130 +1,19 @@
 # Ph-UI!!!
 
-<details>
-	<summary><strong>Instructions for Students (Click to Expand)</strong></summary>
-  
-	**Submission Cleanup Reminder:**
-	- This README.md contains extra instructional text for guidance.
-	- Before submitting, remove all instructional text and example prompts from this file.
-	- You may delete these sections or use the toggle/hide feature in VS Code to collapse them for a cleaner look.
-	- Your final submission should be neat, focused on your own work, and easy to read for grading.
-  
-	This helps ensure your README.md is clear, professional, and uniquely yours!
-</details>
 
----
+## Lab Overview  
+Members: Flora Zhang zz979
 
----
-
-## Lab Overview
-Team: <canvas group name>  
-Members: Full Name (netid, github-handle), ...  
-Project name: <name>
+Project name: Itadakimasu Box
 
 
 For lab this week, we focus on both sensing and actuation, bringing new modes of input and output into your devices, while also prototyping the physical structure and overall look of the device. You will consider how the physical form supports sensing and actuation, and how these elements come together to shape the interaction and aesthetics of the device.
 
----
-
-## Lab Structure
-
-A) [Capacitive Sensing](#part-a)
-
-B) [More Sensors](#part-b)
-
-C) [Servo Actuation](#part-c)
-
-D) [Physical Interaction Design: Feast Automata](#part-d)
-
-E) [Build & Integrate](#part-e)
-
-F) [Final Documentation](#part-f)
-
----
 
 ## Part 1 Lab Preparation
 
----
-
-### Get the latest content:
-As always, pull updates from the class Interactive-Lab-Hub to both your Pi and your own GitHub repo. As we discussed in the class, there are 3 ways you can do so:
-
-
-Option 1: On the Pi, `cd` to your `Interactive-Lab-Hub`, pull the updates from upstream (class lab-hub) and push the updates back to your own GitHub repo. You will need the personal access token for this.
-```
-pi@ixe00:~$ cd Interactive-Lab-Hub
-pi@ixe00:~/Interactive-Lab-Hub $ git pull upstream Fall2026
-pi@ixe00:~/Interactive-Lab-Hub $ git add .
-pi@ixe00:~/Interactive-Lab-Hub $ git commit -m "get lab4 content"
-pi@ixe00:~/Interactive-Lab-Hub $ git push
-```
-
-Option 2: On your own GitHub repo, [create pull request](https://github.com/FAR-Lab/Developing-and-Designing-Interactive-Devices/blob/2021Fall/readings/Submitting%20Labs.md) to get updates from the class Interactive-Lab-Hub. After you have latest updates online, go on your Pi, `cd` to your `Interactive-Lab-Hub` and use `git pull` to get updates from your own GitHub repo.
-
-Option 3: (preferred) use the Github.com interface to update the changes.
-
----
-
-### Quick Start: Python Environment Setup
-
-1. **Create and activate a virtual environment in Lab 4:**
-	```bash
-	cd ~/Interactive-Lab-Hub/Lab\ 4
-	python3 -m venv .venv
-	source .venv/bin/activate
-	```
-2. **Install all Lab 4 requirements:**
-	```bash
-	pip install -r requirements2025.txt
-	```
-3. **Check CircuitPython Blinka installation:**
-	```bash
-	python blinkatest.py
-	```
-	If you see "Hello blinka!", your setup is correct. If not, follow the troubleshooting steps in the file or ask for help.
-
----
-
-### Gathering materials for this lab:
-
-* Cardboard (start collecting those shipping boxes!)
-* Found objects and materials--like bananas and twigs.
-* Cutting board
-* Cutting tools
-* Markers
-
-
-(We do offer shared cutting board, cutting tools, and markers on the class cart during the lab, so do not worry if you don't have them!)
-
----
-
-### Prototyping References 
-
-* [What do prototypes prototype?](https://www.semanticscholar.org/paper/What-do-Prototypes-Prototype-Houde-Hill/30bc6125fab9d9b2d5854223aeea7900a218f149)
-* [Paper prototyping](https://www.uxpin.com/studio/blog/paper-prototyping-the-practical-beginners-guide/) is used by UX designers to quickly develop interface ideas and run them by people before any programming occurs. 
-* [Cardboard prototypes](https://www.youtube.com/watch?v=k_9Q-KDSb9o) help interactive product designers to work through additional issues, like how big something should be, how it could be carried, where it would sit. 
-* [Tips to Cut, Fold, Mold and Papier-Mache Cardboard](https://makezine.com/2016/04/21/working-with-cardboard-tips-cut-fold-mold-papier-mache/) from Make Magazine.
-* [Surprisingly complicated forms](https://www.pinterest.com/pin/50032245843343100/) can be built with paper, cardstock or cardboard.  The most advanced and challenging prototypes to prototype with paper are [cardboard mechanisms](https://www.pinterest.com/helgangchin/paper-mechanisms/) which move and change. 
-* [Dyson Vacuum Cardboard Prototypes](http://media.dyson.com/downloads/JDF/JDF_Prim_poster05.pdf)
-<p align="center"><img src="https://dysonthedesigner.weebly.com/uploads/2/6/3/9/26392736/427342_orig.jpg"  width="200" > </p>
-
-### Feast Automata Inspirations
-
-* [Simone Giertz - The Breakfast Machine](https://www.youtube.com/watch?v=E2evC2xTNWg) turns an everyday breakfast routine into a deliberately awkward robotic performance.
-* [Pee-wee’s Big Adventure - Breakfast Machine](https://www.classhook.com/resources/1295-pee-wee-s-big-adventure-pee-wee-s-breakfast-machine?utm_source=chatgpt.com) An elaborate Rube Goldberg-style machine turns the ordinary routine of making breakfast into a playful mechanical performance.
-* [Wallace & Gromit - The Autochef](https://www.google.com/search?sca_esv=66d2cd5ecf989ed9&sxsrf=APpeQnuwAWHrA3R0b1GeoQ4r-spKos3vUQ:1789367781228&udm=7&fbs=ABfTbFVyMZGZf1hfvX9uKjN_-G8cxpBkeIeqYwoCbfNVc4vKE7plZzta63Pe5DpJ3XFR9XzI_yj6fb6bfPt1x_5u3nRcG7tR9jg4Omd7-UnDuaw5i86wRQqe-045kPXObjb1eDS649ikhB0y_hSFYfNioDnA60A2i_oC1IzIZywb7ERnDQqnSx10JnfJEaAauzJXglx4123_vjf0_54bKrF6QjM9ne5i3g&q=Wallace+%26+Gromit+%E2%80%94+The+Autochef&sa=X&ved=2ahUKEwiI0OO3uu2WAxVHEFkFHQ3iAOEQtKgLegQIFRAB&biw=1197&bih=613&dpr=2.5#fpstate=ive&vld=cid:72c3eb07,vid:2igRcGxlshA,st:0)
-* [Nik Ramage - Jelly Wobbler](http://www.youtube.com/watch?v=pj2t71q68sY#t=33) makes the simple act of wobbling jelly into a dedicated machine.
-* [Zekun Chang - Blah Blah](https://zekunchang.com/portfolio/blah-blah/) is an alcohol machine that presents a playful commentary on drunken behavior.
-
-### Mechanical Prototyping Resource
-
-* [Gear Template Generator](https://woodgears.ca/gear_cutting/template.html) can help you prototype simple gear mechanisms for translating servo motion into physical movement.
-
-
----
-
-### Part A
-### Capacitive Sensing, a.k.a. Human-Twizzler Interaction 
+<details>
+<summary><strong> Part A  Capacitive Sensing, a.k.a. Human-Twizzler Interaction </strong></summary> 
 
 We want to introduce you to the [capacitive sensor](https://learn.adafruit.com/adafruit-mpr121-gator) in your kit. It's one of the most flexible input devices we are able to provide. At boot, it measures the capacitance on each of the 12 contacts. Whenever that capacitance changes, it considers it a user touch. You can attach any conductive material. In your kit, you have copper tape that will work well, but don't limit yourself! In the example below, we use Twizzlers--you should pick your own objects.
 
@@ -143,13 +32,11 @@ These Twizzlers are connected to pads 6 and 10. When you run the code and touch 
 Twizzler 10 touched!
 Twizzler 6 touched!
 ```
+</details>
 
----
-
-### Part B
-### More sensors
-
-#### Light/Proximity/Gesture sensor (APDS-9960)
+<details>
+<summary><strong> Part B  More sensors </strong></summary>
+ Light/Proximity/Gesture sensor (APDS-9960)
 
 We here want you to get to know this awesome sensor [Adafruit APDS-9960](https://www.adafruit.com/product/3595). It is capable of sensing proximity, light (also RGB), and gesture! 
  
@@ -223,10 +110,10 @@ Connect it to your pi with Qwiic connector and try running the example script to
 You can go to the [SparkFun GitHub Page](https://github.com/sparkfun/Qwiic_Proximity_Py) to learn more about the sensor and see other examples
 
 ---
+</details>
 
-### Part C
-### Servo Actuation
-
+<details>
+<summary><strong> Part C Servo Actuation </strong></summary>
 Now that you have explored several forms of sensing, add physical output by learning to control a servo motor. Complete the Servo pHAT setup and basic servo test before beginning your interaction design.
 
 ### Servo Control with SparkFun Servo pHAT
@@ -251,9 +138,9 @@ For more details and advanced usage, see the [official SparkFun Servo pHAT docum
 A servo motor is a rotary actuator that allows for precise control of angular position. The position is set by the width of an electrical pulse (PWM). You can read [this Adafruit guide](https://learn.adafruit.com/adafruit-arduino-lesson-14-servo-motors/servo-motors) to learn more about how servos work.
 
 ---
-
-### Part D
-### Physical Interaction Design: Feast Automata
+</details>
+<details>
+<summary><strong> Part D Physical Interaction Design </strong></summary>
 
 **Feast Automata:** build a device that **transforms ordinary dining rituals into playful physical interactions.** Begin with a familiar experience around eating, drinking, cooking, serving, or sharing food, and explore how sensing and actuation might augment, exaggerate, automate, or reinterpret your dining experience.
 
@@ -279,17 +166,22 @@ Your kit includes these [SparkFun Qwiic OLED screens](https://www.sparkfun.com/p
 <img src="https://cdn.sparkfun.com//assets/parts/1/6/1/3/5/17153-SparkFun_Qwiic_OLED_Display__0.91_in__128x32_-01.jpg" height="200" />
 
 </p>
+</details>
 
-
+### Itadakimasu Box
 My *Itadakimasu Box* is inspired by the Japanese tradition of putting one's hands together and saying "Itadakimasu" before eating. A proximity sensor will be attached to a wearable napkin at chest level to detect the hand gesture, while a microphone recognizes the spoken phrase. A servo motor will be installed at the back of the utensil box to control the lid, which opens only after both actions are completed. A light sensor inside the box will detect unauthorized opening and trigger an unusual sound effect. The electronic components will be hidden inside or beneath the box, keeping the design clean. The box will feature a minimalist, Japanese-inspired aesthetic to emphasize the sense of ritual before a meal.
 
 **\*\*\*Draw 5 sketches that explore different physical arrangements for your sensing and actuation.\*\*\***
 
-<img height="400" alt="ChatGPT Image Oct 13, 2026, 11_35_32 PM-1" src="https://github.com/user-attachments/assets/81e44835-97ea-4dd4-8a5f-a8b1b61b3789" />
-<img height="400" alt="ChatGPT Image Oct 13, 2026, 11_35_32 PM-2" src="https://github.com/user-attachments/assets/1a153a80-f9c8-4811-9ed8-ffaad5641103" />
-<img height="400" alt="ChatGPT Image Oct 13, 2026, 11_35_33 PM-3" src="https://github.com/user-attachments/assets/f1afebb4-1da4-435f-acf1-1b5c5b9c3aba" />
-<img height="400" alt="ChatGPT Image Oct 13, 2026, 11_35_34 PM-4" src="https://github.com/user-attachments/assets/b0642e96-cd52-4e7e-a81b-77f37f76ea9e" />
-<img height="400" alt="ChatGPT Image Oct 13, 2026, 11_35_34 PM-5" src="https://github.com/user-attachments/assets/636dd753-73ea-448a-9d3a-93de2bb358c5" />
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/81e44835-97ea-4dd4-8a5f-a8b1b61b3789" width="180" />
+  <img src="https://github.com/user-attachments/assets/1a153a80-f9c8-4811-9ed8-ffaad5641103" width="180" />
+  <img src="https://github.com/user-attachments/assets/f1afebb4-1da4-435f-acf1-1b5c5b9c3aba" width="180" />
+  <img src="https://github.com/user-attachments/assets/b0642e96-cd52-4e7e-a81b-77f37f76ea9e" width="180" />
+  <img src="https://github.com/user-attachments/assets/636dd753-73ea-448a-9d3a-93de2bb358c5" width="180" />
+</p>
+
 
 
 **\*\*\*What questions do these sketches raise? What do you need to physically prototype to answer them?\*\*\***
@@ -304,7 +196,7 @@ I would like to prototype the servo-controlled utensil box first because it is t
 
 **\*\*\*Document your rough prototype with photos and/or video.\*\*\***
 
-[---](https://drive.google.com/file/d/1CD3hB3yAuTPhOCCj3cPDl1wWDBbu1MM9/view?usp=sharing)
+[VIDEO](https://drive.google.com/file/d/1CD3hB3yAuTPhOCCj3cPDl1wWDBbu1MM9/view?usp=sharing)
 
 ## Part 2
 
@@ -316,62 +208,12 @@ Following exploration and reflection from Part 1, complete the "looks like," "wo
 
 #### Build & Integrate: Sensing + Actuation
 
-For Part 2, build the Feast Automata interaction you developed in Part D by connecting sensing/input to physical actuation.
-
-**Your prototype should:**
-- Use at least one sensing or input device.
-- Use servo-based physical actuation.
-- Connect sensing and actuation into a meaningful interaction around eating, drinking, cooking, serving, or sharing food.
-- Additional inputs, displays, LEDs, buttons, or other outputs are optional extensions.
-
-**Document your system with:**
-- Code for your sensing + actuation prototype
-- Photos and/or video of the working prototype in action
-- A simple interaction diagram or sketch showing how sensing and actuation are connected
-- Written reflection: What did you learn about connecting sensing, movement, and physical form? What was fun, surprising, or challenging?
-
-**Questions to consider:**
-- How does your chosen sensor or input shape the physical response?
-- How does the physical arrangement of the sensor and actuator change the interaction?
-- What thresholds, timing, or movement patterns make the interaction feel clear or playful?
-- What changes when you adjust the sensor placement or servo motion?
-
-Iterate on the sensing, movement, and physical form, and document what you discover.
-
-See encoder_accel_servo_dashboard.py in the Lab 4 folder for an optional example of chaining together three devices.
-
-**`Lab 4/encoder_accel_servo_dashboard.py`**
-
-#### Example Application: Windmill Coaster
-
-Now that you have explored both sensing and actuation, here is a simple example that combines the two.
-
-The **Windmill Coaster** uses a Qwiic distance/proximity sensor to detect when a cup is placed on a coaster. When the cup is detected, a servo motor animates a small windmill by sweeping it back and forth, turning an ordinary action during drinking into a playful physical interaction.
-
-<p align="center">
-    <img src="windmill_coaster11.gif" alt="Windmill Coaster Demo" width="400"/>
-</p>
 
 
-This example demonstrates a simple interaction pipeline:
 
-**cup placed → distance sensor detects cup → servo actuates windmill**
 
-Connect the Qwiic distance sensor to the Pi and connect the servo to Channel 0 of the Servo pHAT. Make sure the Servo pHAT is powered through its USB-C connection.
-
-Run the example script:
-
-```bash
-python windmill_coaster.py
-```
-
-The script continuously reads the proximity value from the distance sensor. When the value passes a threshold, the servo begins animating the windmill. When the cup is removed, the servo stops and returns to its resting position.
-
-You may need to adjust `CUP_THRESHOLD` in [`windmill_coaster.py`](windmill_coaster.py) depending on the size of your cup and the physical placement of the sensor. You can run `qwiic_distance.py` first to compare readings with and without a cup.
-
-Use this example as a starting point. Change the sensor, movement, physical form, or dining interaction to create your own Feast Automata variation.
-
-#### Optional Extensions
+<details>
+<summary><strong>Optional Extensions </strong></summary>
 
 The following examples are optional resources if you want to add more inputs or outputs to your prototype.
 
@@ -485,32 +327,56 @@ python gpio_expander.py
 
 This is a playful way to visualize how the expander works, but the same technique applies if you wanted to prototype buttons, switches, or other interaction elements. It’s a lightweight, flexible addition to your prototyping toolkit.
 
----
-
-
----
-
----
+</details>
 
 ### Part F
 
 ### Final Documentation
 
-Document all the prototypes and iterations you have designed and worked on! Again, deliverables for this lab are writings, sketches, photos, and videos that show what your prototype:
-* "Looks like": shows how the device should look, feel, sit, weigh, etc.
-* "Works like": shows what the device can do
-* "Acts like": shows how a person would interact with the device
+#### System Overview
 
----
+*Itadakimasu Box* transforms a traditional Japanese pre-meal ritual into an interactive dining experience. The prototype uses a USB microphone to detect the user's voice, a SparkFun VCNL4040 proximity sensor to detect whether utensils are inside the box, and a servo motor to control the lid. A USB speaker provides different audio feedback depending on whether the user follows or skips the ritual.
 
-## Deliverables \& Submission for Lab 4
+The system combines sensing, physical movement, and sound to create a playful dining experience.
 
-The deliverables for this lab are, writings, sketches, photos, and videos that show what your prototype:
-* "Looks like": shows how the device should look, feel, sit, weigh, etc.
-* "Works like": shows what the device can do.
-* "Acts like": shows how a person would interact with the device.
+#### Interaction Flow
 
-For submission, the readme.md page for this lab should be edited to include the work you have done:
-* Upload any materials that explain what you did, into your lab 4 repository, and link them in your lab 4 readme.md.
-* Link your Lab 4 readme.md in your main Interactive-Lab-Hub readme.md. 
-* Labs are due on Mondays, make sure to submit your Lab 4 readme.md to Canvas.
+```mermaid
+flowchart TD
+    A["Utensils inside box"] --> B{"Voice detected?"}
+    B -->|Yes| C["Servo slowly opens lid"]
+    C --> D{"Utensils removed?"}
+    D -->|Yes| E["Play relaxing dining music"]
+    D -->|No| D
+
+    B -->|No| F{"Utensils removed?"}
+    F -->|No| B
+    F -->|Yes| G["Play funny warning sound"]
+
+    G --> H{"Voice detected?"}
+    H -->|No| G
+    H -->|Yes| I["Stop warning"]
+    I --> E
+```
+
+**Looks Like**
+
+The prototype is a utensil box with a servo-controlled lid. A VCNL4040 proximity sensor is positioned inside the box to detect the presence of utensils, while the servo motor is attached to the lid mechanism. The Raspberry Pi and electronic connections control the system, and a USB microphone and speaker provide voice input and audio feedback.
+
+**Works Like**
+
+The system uses sound detection to initiate the dining ritual. When the microphone detects a sound above the threshold, the servo slowly opens the lid. The proximity sensor then detects when the utensils are removed, triggering relaxing background music. If the utensils are removed before the ritual is completed, the speaker plays a funny reminder instead. The user can then speak to complete the ritual and activate the normal music.
+
+**Acts Like**
+
+The device behaves like a playful dining companion that encourages the user to perform a ritual before eating. Instead of simply storing utensils, it responds to the user's actions through movement and sound. The slow opening movement creates anticipation, while the humorous reminder makes skipping the ritual a playful part of the experience.
+
+
+#### Code
+
+The final prototype integrates voice detection,
+proximity sensing, servo actuation, and audio feedback.
+
+[View the Python code](./itadakimasu_box.py)
+
+
