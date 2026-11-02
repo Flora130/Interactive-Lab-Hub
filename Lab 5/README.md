@@ -2,11 +2,7 @@
 
 **NAMES OF COLLABORATORS HERE**
 
-Flora Zhang
-
-**New this year: the AI runs on the Pi.** 
-
-**Please indicate anyone you collaborated with on this Lab here.** 
+Flora Zhang   Simone Xu 
 
 ## Overview
 
@@ -91,7 +87,6 @@ Since the human face is a key element in identifying a person, the absence of fa
 <img width="200" alt="yoloPerson2" src="https://github.com/user-attachments/assets/a1e66b09-02e0-4213-aeba-6b3e8834f28f" />
 <img width="200" alt="yoloPerson3" src="https://github.com/user-attachments/assets/5e79bd22-5af4-4347-9eff-ccd59b9f1afe" />
 <img width="200" alt="yoloPerson4" src="https://github.com/user-attachments/assets/49ecd464-5182-416b-a0ec-b29c2cd4eb79" />
-<img width="200" alt="yoloPerson5" src="https://github.com/user-attachments/assets/f82d3d5e-5158-44d2-b025-7178a2a3df79" />
 </p>
 
 
@@ -105,9 +100,10 @@ Since the human face is a key element in identifying a person, the absence of fa
 \*\*\***Include a screenshot or short video of the hand pose demo, and write how you might use face, hand or body pose tracking in your observant system.**\*\*\*
 
 I have found that the model is quite sensitive in its tracking of the hands, particularly regarding the movements of the fingers. The area of ​​the shape formed by connecting the fingertips can also be used to control music.
-
+<p align="center">
 <img width="300" alt="handpose" src="https://github.com/user-attachments/assets/c433ad8e-b019-458b-ac90-707a84966f2c" />
-
+<img width="300" alt="yoloPerson5" src="https://github.com/user-attachments/assets/bee58700-3f3d-40b9-9cc6-70555089f8bf" />
+</p>
 
 ## Part D. 
 ### Reason: run Qwen on the Pi with Ollama
@@ -173,40 +169,31 @@ In one experiment, I asked whether anyone had left the frame during a one-minute
 
 
 # Lab 5 Part 2: Overnight Sensation
-
-For Part 2, you will use the observant system from Part 1 to design a night-time interaction. On-device AI is slow, so let it work while you sleep. The person meets the device twice: **before bed**, when they hand the night over, and **when awake**, when the device gives something back. In between, the pipeline from Part E runs on its own.
-
-Two flavors, pick one or mix them:
-
-* **Sense all night.** The Pi watches, listens or measures from bedtime until morning and keeps a log.
-* **Process all night.** You already have the data (a day of phone photos, a long recording) and the Pi needs hours to get through it.
-
-Two house rules. Sample rather than stream: one look every 5 to 30 seconds is plenty, and it keeps the Pi cool. And keep everything on the Pi: tell the people you live with, point the camera at things rather than at beds, and delete the snapshots after the demo.
-
 ## Part F. 
 ### Read Part 2 and storyboard your night-time interaction
 
-Storyboard a night-time interaction built on your observant system, in three panels:
+**Sleep Symphony** is a personalized alarm clock that tracks body movements during sleep and transforms them into a unique morning melody. More movement creates energetic music, while less movement produces calmer sounds.
 
-1. **Before bed.** How does the person hand the night over, and how does the device acknowledge it?
-2. **While asleep.** What does the device watch or work through?
-3. **When awake.** What is the one thing the person learns, and in what medium?
+Before Bed: Before going to sleep, the user activates sleep mode on their alarm clock. The clock responds with a soft light to acknowledge that it has started monitoring the user's body movements.
 
-Stuck? A kitchen that tells you who raided the fridge. A desk that reports whether you actually went to bed. A window that names the quietest hour. A plant that describes its night. Find something better.
+While Asleep: Throughout the night, the clock tracks how often the user moves or changes sleeping positions. It translates these movements into a personalized alarm melody. The more the user moves, the faster and more energetic the music becomes. A calmer night produces a softer, slower melody.
 
-Use storyboards and/or [Verplank diagrams](https://ccrma.stanford.edu/courses/250a-fall-2004/IDSketchbok.pdf).
+When Awake: In the morning, the user wakes up to their unique alarm melody, generated from the previous night's movements. Instead of viewing sleep statistics, they experience their night's activity through music, turning invisible sleep patterns into an auditory experience.
 
 \*\*\***Insert ideas, sketches, Verplank diagrams and storyboards for your night-time interaction here.**\*\*\*
 
+<img width="967" height="287" alt="sketch" src="https://github.com/user-attachments/assets/183d6da4-5514-41b6-a79a-e38c1ce51b06" />
+
+
 ## Prep for Part 2
 
-1. Look at and give feedback on the Part F storyboards.
-   **Put the feedback for your ideas here.**
-2. [Update your Lab Hub](prep.md#get-the-latest-content) to get the latest content for Part 2.
-3. Decide where the device will spend the night and who else lives there. Get their OK before the first run.
-4. Revise your storyboard with the feedback and with what you learned in Part E about where the pipeline breaks.
+ **Put the feedback for your ideas here.**
+
+ My peers find this creative alarm clock concept quite interesting; it adds a pleasant surprise to the otherwise dull morning wake-up routine. However, tracking sleeping positions is a challenging design aspect—it not only tests the alarm clock’s recording angle but also raises the question of whether movements made beneath a duvet can be accurately detected.
 
 \*\*\***Post your revised storyboard here.**\*\*\*
+
+I’ve chosen to work with Simone on a project about pet monitoring.
 
 ## Part G. 
 ### Design the interaction before bed
